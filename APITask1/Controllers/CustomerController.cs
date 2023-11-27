@@ -15,7 +15,7 @@ namespace APITask1.Controllers
         }
 
         // GET: api/<CustomerController>
-        [HttpGet]
+        [HttpGet("GetAllCustomers")]
         public IEnumerable<CustomerDto> GetCustomers()
         {
             var items = _customerService.GetAll();
@@ -32,32 +32,32 @@ namespace APITask1.Controllers
         }
 
         // GET api/<CustomerController>/5
-        //[HttpGet("{id}")]
-        //public CustomerDto? GetCustomer(int id)
-        //{
-        //    var customer = _customerService.Get(id);
-        //    if (customer != null)
-        //    {
-        //        var data = new CustomerDto
-        //        {
-        //            Id = customer.Id,
-        //            Name = customer.Name,
-        //            Email = customer.Email
-        //        };
-        //        return data;
-        //    }
-        //    return null;
-        //}
+        [HttpGet("GetCustomer")]
+        public CustomerDto? GetCustomer(int id)
+        {
+            var customer = _customerService.Get(id);
+            if (customer != null)
+            {
+                var data = new CustomerDto
+                {
+                    Id = customer.Id,
+                    Name = customer.Name,
+                    Email = customer.Email
+                };
+                return data;
+            }
+            return null;
+        }
 
         // POST api/<CustomerController>
-        [HttpPost]
+        [HttpPost("PostCustomer")]
         public IActionResult Post([FromBody] CustomerDto dto)
         {
             try
             {
                 var customer = new Customer
                 {
-                    Id = dto.Id,
+                    //Id = dto.Id,
                     Name = dto.Name,
                     Email = dto.Email
                 };
@@ -71,7 +71,7 @@ namespace APITask1.Controllers
         }
 
         // PUT api/<CustomerController>/5
-        [HttpPut("{id}")]
+        [HttpPut("PutCustomer")]
         public IActionResult Put(int id, [FromBody] CustomerDto dto)
         {
             try
@@ -84,6 +84,7 @@ namespace APITask1.Controllers
                 item.Name = dto.Name;
                 item.Email = dto.Email;
                 item.Id = dto.Id;
+                _customerService.Update(item);
                 return Ok();
             }
             catch (Exception ex)
@@ -93,7 +94,7 @@ namespace APITask1.Controllers
         }
 
         // DELETE api/<CustomerController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteCustomer")]
         public IActionResult Delete(int id)
         {
             try

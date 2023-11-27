@@ -15,7 +15,7 @@ namespace APITask1.Controllers
         }
 
         // GET: api/<ProductController>
-        [HttpGet]
+        [HttpGet("GetAllProducts")]
         public IEnumerable<ProductDto> GetProducts()
         {
             var items = _productService.GetAll();
@@ -32,32 +32,32 @@ namespace APITask1.Controllers
         }
 
         // GET api/<ProductController>/5
-        //[HttpGet("{id}")]
-        //public ProductDto? GetProduct(int id)
-        //{
-        //    var prod = _productService.Get(id);
-        //    if (prod != null)
-        //    {
-        //        var data = new ProductDto
-        //        {
-        //            Name = prod.Name,
-        //            Price = prod.Price,
-        //            Discount = prod.Discount
-        //        };
-        //        return data;
-        //    }
-        //    return null;
-        //}
+        [HttpGet("GetProduct")]
+        public ProductDto? GetProduct(int id)
+        {
+            var prod = _productService.Get(id);
+            if (prod != null)
+            {
+                var data = new ProductDto
+                {
+                    Name = prod.Name,
+                    Price = prod.Price,
+                    Discount = prod.Discount
+                };
+                return data;
+            }
+            return null;
+        }
 
         // POST api/<ProductController>
-        [HttpPost]
+        [HttpPost("PostProduct")]
         public IActionResult Post([FromBody] ProductDto dto)
         {
             try
             {
                 var product = new Product
                 {
-                    Id = dto.Id,
+                    //Id = dto.Id,
                     Price = dto.Price,
                     Discount = dto.Discount,
                     Name = dto.Name
@@ -72,7 +72,7 @@ namespace APITask1.Controllers
         }
 
         // PUT api/<ProductController>/5
-        [HttpPut("{id}")]
+        [HttpPut("PutProduct")]
         public IActionResult Put(int id, [FromBody] ProductDto dto)
         {
             try
@@ -86,6 +86,7 @@ namespace APITask1.Controllers
                 item.Discount = dto.Discount;
                 item.Name = dto.Name;
                 item.Id = id;
+                _productService.Update(item);   
                 return Ok();
             }
             catch (Exception ex)
@@ -95,7 +96,7 @@ namespace APITask1.Controllers
         }
 
         // DELETE api/<ProductController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteProduct")]
         public IActionResult Delete(int id)
         {
             try

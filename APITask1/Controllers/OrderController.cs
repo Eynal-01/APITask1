@@ -15,7 +15,7 @@ namespace APITask1.Controllers
         }
 
         // GET: api/<OrderController>
-        [HttpGet]
+        [HttpGet("GetAllOrders")]
         public IEnumerable<OrderDto> GetOrders()
         {
             var items = _orderService.GetAll();
@@ -25,47 +25,47 @@ namespace APITask1.Controllers
                 {
                     OrderDate = o.OrderDate,
                     OrderName = o.OrderName,
-                    Product=o.Product,  
-                    ProductId = o.ProductId,    
-                    CustomerId = o.CustomerId,  
-                    Customer=o.Customer,    
-                    Id = o.Id,  
+                    Product = o.Product,
+                    ProductId = o.ProductId,
+                    CustomerId = o.CustomerId,
+                    Customer = o.Customer,
+                    Id = o.Id,
                 };
             });
             return dataToReturn;
         }
 
         // GET api/<OrderController>/5
-        //[HttpGet("{id}")]
-        //public OrderDto? GetOrder(int id)
-        //{
-        //    var order = _orderService.Get(id);
-        //    if (order != null)
-        //    {
-        //        var data = new OrderDto
-        //        {
-        //            OrderName = order.OrderName,
-        //            OrderDate = order.OrderDate,
-        //            Product = order.Product,
-        //            Customer = order.Customer,
-        //            ProductId = order.ProductId,
-        //            CustomerId = order.CustomerId,
-        //            Id = order.Id
-        //        };
-        //        return data;
-        //    }
-        //    return null;
-        //}
+        [HttpGet("GetOrder")]
+        public OrderDto? GetOrder(int id)
+        {
+            var order = _orderService.Get(id);
+            if (order != null)
+            {
+                var data = new OrderDto
+                {
+                    OrderName = order.OrderName,
+                    OrderDate = order.OrderDate,
+                    Product = order.Product,
+                    Customer = order.Customer,
+                    ProductId = order.ProductId,
+                    CustomerId = order.CustomerId,
+                    Id = order.Id
+                };
+                return data;
+            }
+            return null;
+        }
 
         // POST api/<OrderController>
-        [HttpPost]
+        [HttpPost("PostOrder")]
         public IActionResult Post([FromBody] OrderDto dto)
         {
             try
             {
                 var order = new Order
                 {
-                    Id = dto.Id,
+                    //Id = dto.Id,
                     OrderDate = dto.OrderDate,
                     OrderName = dto.OrderName,
                     Product = dto.Product,
@@ -83,7 +83,7 @@ namespace APITask1.Controllers
         }
 
         // PUT api/<OrderController>/5
-        [HttpPut("{id}")]
+        [HttpPut("PutOrder")]
         public IActionResult Put(int id, [FromBody] OrderDto dto)
         {
             try
@@ -100,6 +100,7 @@ namespace APITask1.Controllers
                 item.CustomerId = dto.CustomerId;
                 item.Customer = dto.Customer;
                 item.Id = id;
+                _orderService.Update(item);
                 return Ok();
             }
             catch (Exception ex)
@@ -109,7 +110,7 @@ namespace APITask1.Controllers
         }
 
         // DELETE api/<OrderController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteOrder")]
         public IActionResult Delete(int id)
         {
             try
